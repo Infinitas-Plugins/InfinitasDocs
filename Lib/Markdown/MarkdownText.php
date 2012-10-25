@@ -31,7 +31,7 @@ require_once __DIR__ . '/Filter.php';
  * @author Max Tsepkov <max@garygolden.me>
  * @version 1.0
  */
-class Markdown_Text
+class MarkdownText
 {
     /**
      *
