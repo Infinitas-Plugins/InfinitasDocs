@@ -31,14 +31,20 @@ foreach($pluginDocs['Documentation'] as &$docs)  {
 	));
 }
 
+$readme = null;
+if(!empty($pluginReadme['Documentation']['contents'])) {
+	$readme = $this->Html->tag('div', $pluginReadme['Documentation']['contents'] . "<hr>", array('class' => 'readme'));
+}
 
-echo $this->Html->tag('div', 
-	$this->Html->tag('h1', $pluginDocs['Plugin']['name']) . implode('', $pluginDocs['Documentation']), 
-	array('class' => array(
-		'infinitas_docs',
-		$pluginDocs['Plugin']['core'] ? 'core' : null
-	))
+$class = array(
+	'infinitas_docs',
+	$pluginDocs['Plugin']['core'] ? 'core' : null
 );
+echo $this->Html->tag('div', implode('', array(
+	$this->Html->tag('h1', $pluginDocs['Plugin']['name']),
+	$readme,
+	implode('', $pluginDocs['Documentation'])
+)), array('class' => $class));
 
 echo $this->Html->tag('div', $this->Html->link(__d('infinitas_docs', 'Show all'), array(
 	'action' => 'index',
