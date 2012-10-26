@@ -116,8 +116,8 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 /**
  * @brief get plugins to display docs for
  *
- * Any plugins that are in the ignore config will be removed from what can be
- * displayed.
+ * - only: If set, only plugins in this list will be available.
+ * - ignore: If set, anything in this list will be filtered out an not available
  *
  * @param string $type the type of plugin to look for.
  *
@@ -126,16 +126,28 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 	protected function _documentedPlugins($type) {
 		$plugins = InfinitasPlugin::listPlugins($type);
 		$ignore = Configure::read('InfinitasDocs.ignore');
+		$only = Configure::read('InfinitasDocs.only');
 
-		if(empty($ignore)) {
+		if(empty($ignore) && empty($only)) {
 			return $plugins;
 		}
 
 		if(!is_array($ignore)) {
-			$ignore = explode(',', $ignore);
+			$ignore = array_filter(explode(',', $ignore));
+		}
+
+		if(!is_array($only)) {
+			$only = array_filter(explode(',', $only));
 		}
 
 		foreach($plugins as $k => $plugin) {
+			if(!empty($only)) {
+				if(!in_array($plugin, $only)) {
+					unset($plugins[$k]);
+				}
+				continue;
+			}
+
 			if(in_array($plugin, $ignore)) {
 				unset($plugins[$k]);
 			}
