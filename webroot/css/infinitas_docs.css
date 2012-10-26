@@ -1,0 +1,15 @@
+.infinitas_docs {
+	clear: both;
+}
+.infinitas_docs.footer {
+	clear: both;
+}
+
+.infinitas_docs div.plugins {
+	width: 33%;
+	float: left;
+}
+
+.infinitas_docs a>img {
+	width: 200px;
+}
