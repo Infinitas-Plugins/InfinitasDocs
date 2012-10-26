@@ -62,7 +62,7 @@ class InfinitasDocsController extends InfinitasDocsAppController {
  */
 	public function index() {
 		$this->saveRedirectMarker();
-		$docsCorePlugins = $docsPlugins = $pluginDocs = array();
+		$docsCorePlugins = $docsPlugins = $pluginDocs = $pluginReadme = array();
 		if(empty($this->request->doc_plugin)) {
 			$docsCorePlugins = $this->{$this->modelClass}->plugins('core');
 			$docsPlugins = $this->{$this->modelClass}->plugins('nonCore');
@@ -75,9 +75,14 @@ class InfinitasDocsController extends InfinitasDocsAppController {
 			} catch (Exception $e) {
 				$this->notice($e);
 			}
+
+			$pluginReadme = $this->{$this->modelClass}->documentation(
+				$this->request->doc_plugin,
+				'readme'
+			);
 		}
 
-		$this->set(compact('docsCorePlugins', 'docsPlugins', 'pluginDocs'));
+		$this->set(compact('docsCorePlugins', 'docsPlugins', 'pluginDocs', 'pluginReadme'));
 	}
 
 /**
