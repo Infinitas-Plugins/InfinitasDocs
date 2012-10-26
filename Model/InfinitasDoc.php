@@ -220,6 +220,7 @@ class InfinitasDoc extends InfinitasDocsAppModel {
  * @return string
  */
 	protected function _getContent($file, $raw = false) {
+		App::uses('File', 'Utility');
 		$File = new File($file);
 		$content = $File->read();
 		if($raw) {
