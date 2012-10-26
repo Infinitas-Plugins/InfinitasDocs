@@ -128,9 +128,13 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 
 		$pluginDocs = array();
 		for($docs->rewind(); $docs->valid(); $docs->next()) {
+			$file = $docs->current()->getBasename('.md');
+			if(strtolower($file) == 'readme') {
+				continue;
+			}
 			$pluginDocs[] = array(
-				'name' => $this->_docName($docs->current()->getBasename('.md')),
-				'slug' => $docs->current()->getBasename('.md'),
+				'name' => $this->_docName($file),
+				'slug' => $file,
 				'file' => $docs->current()->getBasename(),
 				'path' => $docs->current()->getPath()
 			);
@@ -141,7 +145,7 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 		}
 
 		usort($pluginDocs, function ($a, $b) {
-			return strcasecmp($a['name'], $b['name']);
+			return strcasecmp($a['slug'], $b['slug']);
 		});
 
 		return $pluginDocs = array(
@@ -163,6 +167,10 @@ class InfinitasDoc extends InfinitasDocsAppModel {
  */
 	protected function _docName($name) {
 		$type = $this->docTypes($this->getType());
+		$list = explode('-', $name, 2);
+		if(!empty($list[1]) && (int)$list[0] == $list[0]) {
+			$name = $list[1];
+		}
 		$name = Inflector::humanize(Inflector::slug($name));
 
 		return $name;
@@ -229,7 +237,7 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 
 		App::uses('MarkdownText', 'InfinitasDocs.Lib/Markdown');
 		$Markdown = new MarkdownText();
-		$Markdown->setMarkdown($content);
+		$Markdown->setMarkdown($content . "\n");
 		return $Markdown->getHtml();
 
 	}
