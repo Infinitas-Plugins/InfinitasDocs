@@ -7,7 +7,7 @@ Documents are created using [markdown](http://en.wikipedia.org/wiki/Markdown), a
 There are three categories a doc can be in:
 
 - Developer: These are docs aimed at developers looking to build custom plugins and extend Infinitas
-- Designer: These docs are aimed at designers trying to customise the look and feel of an Infinitas powered website 
+- Designer: These docs are aimed at designers trying to customise the look and feel of an Infinitas powered website
 - Users: These docs are aimed at administrators that run an Infinitas powered website on a day to day basis
 
 Pages will automatically have links to various things such as a switch for the documentation type Eg: `[/infinitas\_docs/switch/developer](/infinitas\_docs/switch/developer)` and links for navigating the various plugins. Errors are also handled for missing pages such as `[Missing Plugin](/infinitas\_docs/MissingPlugin)` or `[Missing Page](/infinitas\_docs/InfinitasDocs/missing_page)`
@@ -37,7 +37,7 @@ When viewed in a browser through Infinitas, documentation might be affected by t
 
 ### Images
 
-The [core Infinitas plugins](https://github.com/infinitas/infinitas) and [officially supported plugins](https://github.com/Infinitas-Plugins) have images hosted on the Infintias CMS servers. 
+The [core Infinitas plugins](https://github.com/infinitas/infinitas) and [officially supported plugins](https://github.com/Infinitas-Plugins) have images hosted on the Infintias CMS servers.
 
 The images can be found at `http://assets.infinitas-cms.org/docs` and are stored in the following structure:
 
@@ -47,17 +47,35 @@ The images can be found at `http://assets.infinitas-cms.org/docs` and are stored
 - General images: /docs/global/some-image.png
 
 If you are building a plugin that requires documentation that does not fit into any of the above categories you will need to host the images yourself. Its not recomended to have the images as part of the plugins repository but you could do that if required.
- 
+
 A number of free images hosting providers are available with permanent storage that could be used. Below are some recomendations <http://imgur.com>
 
 - [http://imgur.com](http://imgur.com)
 - [http://minus.com](http://minus.com)
 
+Images are by default displayed as thumbs, there is little use to having thumbs and full size images and makes for more work to maintain with various sizes of images available.
+Images wrapped in a link will be displayed in a popup with a bit of JS magic from the InfinitasDocs and Thickbox plugin. A title set on the image will also be displayed in the popup.
+
+	// image tag
+	![]\(/some/image.png\ "title") // displayed normally
+
+	// url tag
+	[some]\(url\)
+
+	// both together
+	[![]\(/some/image.png\ "title")]\(/some/image.png\)
+
+### Links
+
+External links are automatically opened in new windows/tabs. An external link is anything that does not start with `/` (relative urls) or does not contain the host.
+
 ### Security
 
 If debug is enabled the documentation can be viewed using a web browser by navigating to `/infinitas\_docs` on an Infinitas powered web site. If you would like to be able to view the documentation while debug is disabled there is an option in the configs `InfinitasDocs.allow_live` which when set to true will allow the docs to be viewed always.
 
-Markdown files are searched for using SPL classes for Iteration and checks to make sure the plugin is valid and the file has an extension of `.md`. 
+Markdown files are searched for using SPL classes for Iteration and checks to make sure the plugin is valid and the file has an extension of `.md`.
+
+You can find out more about hiding what is displayed and when it will be displayed [here](/infinitas\_docs/InfinitasDocs/developer-hiding-docs).
 
 ### Tips
 

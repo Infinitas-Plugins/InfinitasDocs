@@ -5,19 +5,19 @@
 class InfinitasDocsEvents extends AppEvents {
 /**
  * @brief configure some basic routing for the docs
- * 
+ *
  * @param Event $Event The event triggered
- * 
+ *
  * @return void
  */
 	public function onSetupRoutes(Event $Event) {
 		InfinitasRouter::connect(
-			'/infinitas_docs/:doc_plugin', 
+			'/infinitas_docs/:doc_plugin',
 			array(
 				'plugin' => 'infinitas_docs',
 				'controller' => 'infinitas_docs',
 				'action' => 'index'
-			), 
+			),
 			array(
 				'pass' => array(
 					'doc_plugin'
@@ -26,12 +26,12 @@ class InfinitasDocsEvents extends AppEvents {
 		);
 
 		InfinitasRouter::connect(
-			'/infinitas_docs/:doc_plugin/:slug', 
+			'/infinitas_docs/:doc_plugin/:slug',
 			array(
 				'plugin' => 'infinitas_docs',
 				'controller' => 'infinitas_docs',
 				'action' => 'view'
-			), 
+			),
 			array(
 				'pass' => array(
 					'doc_plugin',
@@ -43,12 +43,34 @@ class InfinitasDocsEvents extends AppEvents {
 
 /**
  * @brief load css required for the docs
- * 
+ *
  * @param Event $Event the Event that was triggered
- * 
+ *
  * @return array|void
  */
 	public function onRequireCssToLoad(Event $Event) {
+		return $this->_loadAssets($Event);
+	}
+
+/**
+ * @brief load js required for the docs
+ *
+ * @param Event $Event the Event that was triggered
+ *
+ * @return array|void
+ */
+	public function onRequireJavascriptToLoad(Event $Event, $data = null) {
+		return $this->_loadAssets($Event);
+	}
+
+/**
+ * @brief method for loading the assets
+ *
+ * @param Event $Event the Event that was triggered
+ *
+ * @return array|void
+ */
+	protected function _loadAssets($Event) {
 		if(isset($Event->Handler->request->params['admin']) && $Event->Handler->request->params['admin']) {
 			return;
 		}
@@ -57,4 +79,5 @@ class InfinitasDocsEvents extends AppEvents {
 			'InfinitasDocs.infinitas_docs'
 		);
 	}
+
 }
