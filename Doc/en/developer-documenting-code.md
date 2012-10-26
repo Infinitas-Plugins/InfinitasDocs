@@ -12,11 +12,46 @@ There are three categories a doc can be in:
 
 Pages will automatically have links to various things such as a switch for the documentation type Eg: `[/infinitas\_docs/switch/developer](/infinitas\_docs/switch/developer)` and links for navigating the various plugins. Errors are also handled for missing pages such as `[Missing Plugin](/infinitas\_docs/MissingPlugin)` or `[Missing Page](/infinitas\_docs/InfinitasDocs/missing_page)`
 
+### Main page
+
+The main documentation page for a plugin is created using a file called `readme.md`. This is **case insensitive** so `ReadMe.md` and README.md` are also valid. It is best to keep this file relativly short if you are making use of more than just a readme file for the documentation. The structure of a main page for a plugin looks similar to the following
+
+    <div class="infinitas_docs">
+      <h1>Plugin Name</h1>
+      <div>
+       <div class="readme">Your overview of the plugin</div>
+       <div>Links to documentation</div>
+       <div>General navigation links</div>
+      </div>
+    </div>
+
 ### Markdown
 
 All that is required is to create markdown files with a `.md` extension anywhere in a plugin. It is recomended to use `/YourPlugin/Doc/*` as the location for documentation so that it is easy to find if not viewing though the site.
 
 The markdown parser being used to render the pages can be found [here](https://github.com/garygolden/markdown-oo-php). The Infinitas version is part of the [Developer](https://github.com/Infinitas-Plugins/developer) plugin and has been forked from `garygolden's` repo.
+
+### Styles
+
+When viewed in a browser through Infinitas, documentation might be affected by the sites theme. The InfinitasDocs plugin includes some basic styles that should make the docs readable regardless of how the theme has been styled. You can also include your own styles via the [events](/infinitas\_docs/Events) system to change the overall look of the docs.
+
+### Images
+
+The [core Infinitas plugins](https://github.com/infinitas/infinitas) and [officially supported plugins](https://github.com/Infinitas-Plugins) have images hosted on the Infintias CMS servers. 
+
+The images can be found at `http://assets.infinitas-cms.org/docs` and are stored in the following structure:
+
+- Core Plugins: /docs/`Core/PluginName`/some-image.png
+- Developer Plugin: /docs/`Developer`/some-image.png
+- Official Plugins: /docs/`Plugins/PluginName`/some-image.png
+- General images: /docs/global/some-image.png
+
+If you are building a plugin that requires documentation that does not fit into any of the above categories you will need to host the images yourself. Its not recomended to have the images as part of the plugins repository but you could do that if required.
+ 
+A number of free images hosting providers are available with permanent storage that could be used. Below are some recomendations <http://imgur.com>
+
+- [http://imgur.com](http://imgur.com)
+- [http://minus.com](http://minus.com)
 
 ### Security
 
@@ -26,6 +61,8 @@ Markdown files are searched for using SPL classes for Iteration and checks to ma
 
 ### Tips
 
-When writing documentation it is easy to reference a link to somewhere in the application such as `[/admin](/admin)`. This is especially handy for building user guides. You can also use links such as `[/infinitas\_docs/InfinitasDocs/roadmap](/infinitas\_docs/InfinitasDocs/roadmap)` as the routing is hard coded and should not change.
+- When writing documentation it is easy to reference a link to somewhere in the application such as `[/admin](/admin)`. This is especially handy for building user guides. You can also use links such as `[/infinitas\_docs/InfinitasDocs/roadmap](/infinitas\_docs/InfinitasDocs/roadmap)` as the routing is hard coded and should not change.
 
-For more usage examples on using markdown see the [example page](/infinitas\_docs/InfinitasDocs/developer-markdown-samples)
+- Normally markdown requires a new line below something so that it will generate properly. In order to reduce issues with not having new lines at the end of files all the content parsed by the markdown parser has a `\n` automatically appended to the content.
+
+- For more usage examples on using markdown see the [example page](/infinitas\_docs/InfinitasDocs/developer-markdown-samples)
