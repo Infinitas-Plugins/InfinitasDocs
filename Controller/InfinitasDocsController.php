@@ -69,9 +69,6 @@ class InfinitasDocsController extends InfinitasDocsAppController {
 		} else {
 			try {
 				$pluginDocs = $this->{$this->modelClass}->plugin($this->request->doc_plugin);
-				if(empty($pluginDocs)) {
-					$this->notice('empty');
-				}
 			} catch (Exception $e) {
 				$this->notice($e);
 			}
@@ -80,6 +77,9 @@ class InfinitasDocsController extends InfinitasDocsAppController {
 				$this->request->doc_plugin,
 				'readme'
 			);
+			if(empty($pluginDocs) && empty($pluginReadme)) {
+				$this->notice('empty');
+			}
 		}
 
 		$this->set(compact('docsCorePlugins', 'docsPlugins', 'pluginDocs', 'pluginReadme'));

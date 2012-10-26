@@ -9,41 +9,50 @@ echo $this->element('InfinitasDocs.plugins', array(
 	'core' => false
 ));
 
-if(empty($pluginDocs)) {
-	return;
-}
+if(!empty($pluginDocs)) {
+	$pluginDocs['Documentation'] = array_chunk($pluginDocs['Documentation'], round((count($pluginDocs['Documentation']) / 3) + 1));
 
-$pluginDocs['Documentation'] = array_chunk($pluginDocs['Documentation'], round((count($pluginDocs['Documentation']) / 3) + 1));
+	foreach($pluginDocs['Documentation'] as &$docs)  {
+		foreach($docs as &$doc) {
+			$doc = $this->Html->link($doc['name'], array(
+				'plugin' => 'infinitas_docs',
+				'controller' => 'infinitas_docs',
+				'action' => 'view',
+				'doc_plugin' => $pluginDocs['Plugin']['slug'],
+				'slug' => $doc['slug']
+			));
+		}
 
-foreach($pluginDocs['Documentation'] as &$docs)  {
-	foreach($docs as &$doc) {
-		$doc = $this->Html->link($doc['name'], array(
-			'plugin' => 'infinitas_docs',
-			'controller' => 'infinitas_docs',
-			'action' => 'view',
-			'doc_plugin' => $pluginDocs['Plugin']['slug'],
-			'slug' => $doc['slug']
+		$docs = $this->Html->tag('div', $this->Design->arrayToList($docs), array(
+			'class' => 'plugins'
 		));
 	}
-
-	$docs = $this->Html->tag('div', $this->Design->arrayToList($docs), array(
-		'class' => 'plugins'
-	));
 }
+
+
 
 $readme = null;
 if(!empty($pluginReadme['Documentation']['contents'])) {
 	$readme = $this->Html->tag('div', $pluginReadme['Documentation']['contents'] . "<hr>", array('class' => 'readme'));
 }
 
+if(empty($pluginDocs)) {
+	if(empty($readme)) {
+		return;
+	}
+	$pluginDocs['Plugin'] = $pluginReadme['Plugin'];
+	$pluginDocs['Documentation'] = array(__d('infinitas_docs', 'No more documentation found'));
+}
+
 $class = array(
 	'infinitas_docs',
-	$pluginDocs['Plugin']['core'] ? 'core' : null
+	isset($pluginDocs['Plugin']['core']) && $pluginDocs['Plugin']['core'] ? 'core' : null
 );
 echo $this->Html->tag('div', implode('', array(
 	$this->Html->tag('h1', $pluginDocs['Plugin']['name']),
 	$readme,
-	implode('', $pluginDocs['Documentation'])
+	implode('', $pluginDocs['Documentation']),
+	$this->Html->tag('hr')
 )), array('class' => $class));
 
 echo $this->Html->tag('div', $this->Html->link(__d('infinitas_docs', 'Show all'), array(
