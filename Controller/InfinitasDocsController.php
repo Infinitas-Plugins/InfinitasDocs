@@ -64,8 +64,8 @@ class InfinitasDocsController extends InfinitasDocsAppController {
 		$this->saveRedirectMarker();
 		$docsCorePlugins = $docsPlugins = $pluginDocs = $pluginReadme = array();
 		if(empty($this->request->doc_plugin)) {
-			$docsCorePlugins = $this->{$this->modelClass}->plugins('core');
-			$docsPlugins = $this->{$this->modelClass}->plugins('nonCore');
+			$docsCorePlugins = $this->{$this->modelClass}->plugins('core', true);
+			$docsPlugins = $this->{$this->modelClass}->plugins('nonCore', true);
 		} else {
 			try {
 				$pluginDocs = $this->{$this->modelClass}->plugin($this->request->doc_plugin);

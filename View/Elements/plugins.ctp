@@ -7,12 +7,16 @@ $out = array();
 $plugins = array_chunk($plugins, round((count($plugins) / 3) + 1));
 foreach($plugins as &$pluginList) {
 	foreach($pluginList as &$plugin) {
-		$plugin = $this->Html->link($plugin, array(
-			'plugin' => 'infinitas_docs',
-			'controller' => 'infinitas_docs',
-			'action' => 'index',
-			'doc_plugin' => $plugin
-		));
+		if($plugin['count']) {
+			$plugin = $this->Html->link($plugin['name'], array(
+				'plugin' => 'infinitas_docs',
+				'controller' => 'infinitas_docs',
+				'action' => 'index',
+				'doc_plugin' => $plugin['slug']
+			));
+		} else {
+			$plugin = $plugin['name'];
+		}
 	}
 
 	$pluginList = $this->Html->tag('div', $this->Design->arrayToList($pluginList), array(

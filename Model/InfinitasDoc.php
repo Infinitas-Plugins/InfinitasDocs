@@ -95,8 +95,22 @@ class InfinitasDoc extends InfinitasDocsAppModel {
  *
  * @return array
  */
-	public function plugins($type) {
-		return InfinitasPlugin::listPlugins($type);
+	public function plugins($type, $count = false) {
+		$plugins = InfinitasPlugin::listPlugins($type);
+		if(!$count) {
+			return $plugins;
+		}
+
+		$return = array();
+		foreach($plugins as $plugin) {
+			$return[] = array(
+				'name' => $plugin,
+				'slug' => $plugin,
+				'count' => $this->_iterator($plugin)->count()
+			);
+		}
+
+		return $return;
 	}
 
 /**
