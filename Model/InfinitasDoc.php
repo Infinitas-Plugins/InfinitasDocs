@@ -106,11 +106,26 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 			$return[] = array(
 				'name' => $plugin,
 				'slug' => $plugin,
-				'count' => $this->_iterator($plugin)->count()
+				'count' => $this->_countDocs($plugin)
 			);
 		}
 
 		return $return;
+	}
+
+/**
+ * @brief get a cound of docs available
+ *
+ * @param string $plugin the plugin to get the doc count for
+ *
+ * @return integer
+ */
+	protected function _countDocs($plugin) {
+		try {
+			return $this->_iterator($plugin)->count();
+		} catch (Exception $e){}
+
+		return 0;
 	}
 
 /**
