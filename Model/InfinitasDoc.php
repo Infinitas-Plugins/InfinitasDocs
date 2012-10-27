@@ -303,6 +303,14 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 		App::uses('File', 'Utility');
 		$File = new File($file);
 		$content = $File->read();
+
+		$plugins = $this->plugins('all');
+		$find = $replace = array();
+		foreach($plugins as $plugin) {
+			$find[] = '/\b' . $plugin . '\b/';
+			$replace[] = sprintf('[%s](/infinitas\_docs/%s)', $plugin, $plugin);
+		}
+		$content = preg_replace($find, $replace, $content);
 		if($raw) {
 			return $content;
 		}

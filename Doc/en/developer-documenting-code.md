@@ -69,6 +69,8 @@ Images wrapped in a link will be displayed in a popup with a bit of JS magic fro
 
 External links are automatically opened in new windows/tabs. An external link is anything that does not start with `/` (relative urls) or does not contain the host.
 
+Plugin names are automatically linked to the main docs for the particular plugin. The match is done using word bounds `\b` and **is** case sensitive.
+
 ### Security
 
 If debug is enabled the documentation can be viewed using a web browser by navigating to `/infinitas\_docs` on an Infinitas powered web site. If you would like to be able to view the documentation while debug is disabled there is an option in the configs `InfinitasDocs.allow_live` which when set to true will allow the docs to be viewed always.
