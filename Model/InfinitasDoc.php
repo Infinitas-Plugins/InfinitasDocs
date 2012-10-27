@@ -307,8 +307,8 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 		$plugins = $this->plugins('all');
 		$find = $replace = array();
 		foreach($plugins as $plugin) {
-			$find[] = '/[^`\*\/\\\[]\b' . $plugin . '\b/';
-			$replace[] = sprintf(' [%s](/infinitas\_docs/%s)', $plugin, $plugin);
+			$find[] = '/[^`\*\/\\\[]\b' . $plugin . '[^:-]\b/';
+			$replace[] = sprintf(' [%s](/infinitas\_docs/%s) ', $plugin, $plugin);
 		}
 		$content = preg_replace($find, $replace, $content);
 		if($raw) {
