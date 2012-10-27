@@ -240,7 +240,7 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 	protected function _docName($name) {
 		$type = $this->docTypes($this->getType());
 		$list = explode('-', $name, 2);
-		if(!empty($list[1]) && (int)$list[0] == $list[0]) {
+		if(!empty($list[1]) && ((int)$list[0] !== 0 || $list[0] === '0')) {
 			$name = $list[1];
 		}
 		$name = Inflector::humanize(Inflector::slug($name));
@@ -328,7 +328,7 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 		$plugins = $this->plugins('all');
 		$find = $replace = array();
 		foreach($plugins as $plugin) {
-			$find[] = '/[^`\*\/\\\[]\b' . $plugin . '[^:-]\b/';
+			$find[] = '/[^:`\*\/\\\[]\b' . $plugin . '[^:-]\b/';
 			$replace[] = sprintf(' [%s](/infinitas\_docs/%s) ', $plugin, $plugin);
 		}
 		$content = preg_replace($find, $replace, $content);
