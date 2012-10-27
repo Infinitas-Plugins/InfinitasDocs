@@ -16,4 +16,4 @@ $links = array(
 	__d('infinitas_docs', 'Back to %s docs', $link),
 	$this->Html->link(__d('infinitas_docs', 'Edit on GitHub'), $pluginDoc['Documentation']['github'])
 );
-echo $this->Design->arrayToList($links);
+echo $this->Design->arrayToList($links, array('div' => 'infinitas_docs footer'));

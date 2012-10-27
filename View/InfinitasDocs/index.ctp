@@ -10,7 +10,9 @@ echo $this->element('InfinitasDocs.plugins', array(
 ));
 
 if(!empty($pluginDocs)) {
-	$pluginDocs['Documentation'] = array_chunk($pluginDocs['Documentation'], round((count($pluginDocs['Documentation']) / 3) + 1));
+	$chunk = round(count($pluginDocs['Documentation']) / 3);
+	$chunk = $chunk > 0 ? $chunk : 1;
+	$pluginDocs['Documentation'] = array_chunk($pluginDocs['Documentation'], $chunk);
 
 	foreach($pluginDocs['Documentation'] as &$docs)  {
 		foreach($docs as &$doc) {
@@ -53,6 +55,7 @@ $class = array(
 echo $this->Html->tag('div', implode('', array(
 	$this->Html->tag('h1', $pluginDocs['Plugin']['name']),
 	$readme,
+	$readme ? $this->Html->tag('h3', __d('infinitas_docs', 'More')) : null,
 	implode('', $pluginDocs['Documentation']),
 	$this->Html->tag('hr')
 )), array('class' => $class));
@@ -63,4 +66,4 @@ array_unshift($links, $this->Html->link(__d('infinitas_docs', 'All Docs'), array
 	'doc_plugin' => false
 )));
 
-echo $this->Design->arrayToList($links);
+echo $this->Design->arrayToList($links, array('div' => 'infinitas_docs footer'));
