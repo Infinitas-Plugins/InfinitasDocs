@@ -32,8 +32,10 @@ if(!empty($pluginDocs)) {
 
 
 $readme = null;
+$links = array();
 if(!empty($pluginReadme['Documentation']['contents'])) {
 	$readme = $this->Html->tag('div', $pluginReadme['Documentation']['contents'] . "<hr>", array('class' => 'readme'));
+	$links[] = $this->Html->link(__d('infinitas_docs', 'Edit on GitHub'), $pluginReadme['Documentation']['github']);
 }
 
 if(empty($pluginDocs)) {
@@ -55,8 +57,10 @@ echo $this->Html->tag('div', implode('', array(
 	$this->Html->tag('hr')
 )), array('class' => $class));
 
-echo $this->Html->tag('div', $this->Html->link(__d('infinitas_docs', 'Show all'), array(
+array_unshift($links, $this->Html->link(__d('infinitas_docs', 'All Docs'), array(
 	'action' => 'index',
 	'slug' => false,
 	'doc_plugin' => false
-)), array('class' => 'infinitas_docs footer'));
+)));
+
+echo $this->Design->arrayToList($links);

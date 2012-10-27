@@ -272,7 +272,8 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 					'slug' => $docs->current()->getBasename('.md'),
 					'file' => $docs->current()->getBasename(),
 					'path' => $docs->current()->getPath(),
-					'contents' => $this->_getContent($docs->current()->getPath() . DS . $docs->current()->getBasename())
+					'contents' => $this->_getContent($docs->current()->getPath() . DS . $docs->current()->getBasename()),
+					'github' => $this->_gitHub($docs->current()->getPath() . DS . $docs->current()->getBasename())
 				);
 				break;
 			}
@@ -290,6 +291,26 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 			),
 			'Documentation' => $pluginDocs
 		);
+	}
+
+/**
+ * @brief return the github url for easy access to editing the docs.
+ *
+ * @param string $file the full path to the file
+ *
+ * @return string
+ */
+	protected function _gitHub($file) {
+		$github = array(
+			'core' => 'https://github.com/infinitas/infinitas/blob/dev/',
+			'plugin' => 'https://github.com/Infinitas-Plugins/'
+		);
+
+		if(strstr($file, '/Core/') === false) {
+			return str_replace(APP, $github['plugin'], $file);
+		}
+
+		return str_replace(APP, $github['core'], $file);
 	}
 
 /**
