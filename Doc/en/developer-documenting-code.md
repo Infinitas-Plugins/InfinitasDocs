@@ -8,7 +8,7 @@ There are three categories a doc can be in:
 
 - Developer: These are docs aimed at developers looking to build custom plugins and extend Infinitas
 - Designer: These docs are aimed at designers trying to customise the look and feel of an Infinitas powered website
-- Users: These docs are aimed at administrators that run an Infinitas powered website on a day to day basis
+- User: These docs are aimed at administrators that run an Infinitas powered website on a day to day basis
 
 Pages will automatically have links to various things such as a switch for the documentation type Eg: `[/infinitas\_docs/switch/developer](/infinitas\_docs/switch/developer)` and links for navigating the various plugins. Errors are also handled for missing pages such as `[Missing Plugin](/infinitas\_docs/MissingPlugin)` or `[Missing Page](/infinitas\_docs/InfinitasDocs/missing_page)`
 
@@ -69,7 +69,7 @@ Images wrapped in a link will be displayed in a popup with a bit of JS magic fro
 
 External links are automatically opened in new windows/tabs. An external link is anything that does not start with `/` (relative urls) or does not contain the host.
 
-Plugin names are automatically linked to the main docs for the particular plugin. The match is done using word bounds `\b` and **is** case sensitive.
+Plugin names are automatically linked to the main docs for the particular plugin. The match is done using word bounds `\b` and **is** case sensitive. The `preg\_replace()` will not affect plugin names that are already linked, but will if they are linked like `\[some Users plugin\]\(/some/url\)`.
 
 ### Security
 
