@@ -438,11 +438,11 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 		if(empty($contributors)) {
 			return array();
 		}
-		
+
 		foreach($contributors as &$contributor) {
 			$contributor = array(
 				'name' => $contributor['login'],
-				'link' => $contributor['url'],
+				'link' => sprintf('https://github.com/%s', $contributor['login']),
 				'avatar' => $contributor['avatar_url'],
 				'commits' => $contributor['contributions']
 			);
