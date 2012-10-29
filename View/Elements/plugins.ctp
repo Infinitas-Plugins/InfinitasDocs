@@ -28,7 +28,9 @@ $heading = __d('infinitas_docs', 'Plugins');
 if($core) {
 	$heading = __d('infinitas_docs', 'Core Plugins');
 }
-echo $this->Html->tag('div', $this->Html->tag('h2', $heading) . implode('', $plugins), array('class' => array(
+echo $this->Html->tag('div', $this->Html->tag('h1', $heading) . implode('', $plugins), array('class' => array(
 	'infinitas_docs',
+	'dashboard',
+	'grid_16',
 	$core ? 'core' : null
 )));
