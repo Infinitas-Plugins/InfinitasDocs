@@ -107,6 +107,42 @@ class InfinitasDocsController extends InfinitasDocsAppController {
 		}
 
 		$this->set(compact('pluginDoc'));
+
+	}
+
+/**
+ * @brief admin docs index
+ */
+	public function admin_index() {
+		$this->saveRedirectMarker();
+		$docsCorePlugins = $docsPlugins = $pluginDocs = $pluginReadme = array();
+		if(empty($this->request->doc_plugin)) {
+			$docsCorePlugins = $this->{$this->modelClass}->plugins('core', true);
+			$docsPlugins = $this->{$this->modelClass}->plugins('nonCore', true);
+		} else {
+			try {
+				$pluginDocs = $this->{$this->modelClass}->plugin($this->request->doc_plugin);
+			} catch (Exception $e) {
+				$this->notice($e);
+			}
+
+			$pluginReadme = $this->{$this->modelClass}->documentation(
+				$this->request->doc_plugin,
+				'readme'
+			);
+			if(empty($pluginDocs) && empty($pluginReadme)) {
+				$this->notice('empty');
+			}
+		}
+
+		$this->set(compact('docsCorePlugins', 'docsPlugins', 'pluginDocs', 'pluginReadme'));
+	}
+
+/**
+ * @brief admin docs view
+ */
+	public function admin_view() {
+		$this->view();
 	}
 
 }
