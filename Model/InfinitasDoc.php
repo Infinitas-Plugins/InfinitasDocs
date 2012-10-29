@@ -318,16 +318,26 @@ class InfinitasDoc extends InfinitasDocsAppModel {
  * @return string
  */
 	protected function _gitHub($file) {
+		$url = 'https://github.com/';
 		$github = array(
-			'core' => 'https://github.com/infinitas/infinitas/blob/dev/',
-			'plugin' => 'https://github.com/Infinitas-Plugins/'
+			'core' => 'infinitas/infinitas/blob/dev/',
+			'plugin' => 'Infinitas-Plugins/',
+			'developer' => 'Infinitas-Plugins/Developer/tree/master/',
+			'docs' => 'Infinitas-Plugins/InfinitasDocs/tree/infinitas/'
 		);
 
-		if(strstr($file, '/Core/') === false) {
-			return str_replace(APP, $github['plugin'], $file);
+		if(strstr($file, '/Developer/') !== false) {
+			if(strstr($file, 'InfinitasDocs/') === false) {
+				return $url . str_replace(APP . 'Developer' . DS, $github['developer'], $file);
+			}
+			return $url . str_replace(APP . 'Developer' . DS . 'InfinitasDocs' . DS, $github['docs'], $file);
 		}
 
-		return str_replace(APP, $github['core'], $file);
+		if(strstr($file, '/Core/') !== false) {
+			return $url . str_replace(APP, $github['core'], $file);
+		}
+
+		return $url . str_replace(APP . 'Plugin' . DS, $github['plugin'], $file);
 	}
 
 /**
@@ -344,10 +354,28 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 
 		$plugins = $this->plugins('all');
 		$find = $replace = array();
+		$regex = '/[^:`\*\/\\\[]\b(%s)(,?)[^:-]\b/';
+		$link = ' [$1](/infinitas\_docs/%s)$2 ';
 		foreach($plugins as $plugin) {
-			$find[] = '/[^:`\*\/\\\[]\b' . $plugin . '[^:-]\b/';
-			$replace[] = sprintf(' [%s](/infinitas\_docs/%s) ', $plugin, $plugin);
+			$name = preg_replace('/^Infinitas/', '', $plugin);
+			if(!empty($name)) {
+				$find[] = sprintf($regex, $name);
+				$replace[] = sprintf($link, $plugin);
+			}
+
+			$find[] = sprintf($regex, $plugin);
+			$replace[] = sprintf($link, $plugin);
 		}
+		$content = preg_replace($find, $replace, $content);
+
+		$find = array(
+			sprintf($regex, 'Infinitas'),
+			sprintf($regex, 'CakePHP|Cake')
+		);
+		$replace = array(
+			' [$1](http://infinitas-cms.org "Infinitas Cms") ',
+			' [$1](http://cakephp.org "CakePHP framework") ',
+		);
 		$content = preg_replace($find, $replace, $content);
 		if($raw) {
 			return $content;
