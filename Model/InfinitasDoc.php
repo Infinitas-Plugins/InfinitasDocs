@@ -273,7 +273,8 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 					'path' => APP . 'Core' . DS,
 					'contents' => $this->_getContent(APP . 'Core' . DS . 'readme.md'),
 					'github' => $this->_gitHub(APP . 'Core' . DS . 'readme.md')
-				)
+				),
+				'Contributor' => $this->_contributors('Users')
 			);
 		}
 		if(!$this->validateValidPlugin($plugin)) {
@@ -306,7 +307,8 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 				'slug' => $plugin,
 				'core' => in_array($plugin, $this->plugins('core'))
 			),
-			'Documentation' => $pluginDocs
+			'Documentation' => $pluginDocs,
+			'Contributor' => $this->_contributors($plugin)
 		);
 	}
 
@@ -354,7 +356,7 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 
 		$plugins = $this->plugins('all');
 		$find = $replace = array();
-		$regex = '/[^:`\*\/\\\[]\b(%s)(,?)[^:-]\b/';
+		$regex = '/[^:|`|\\\'|\*|\/|\\|\[]\b(%s)(,?)[^:-]\b/';
 		$link = ' [$1](/infinitas\_docs/%s)$2 ';
 		foreach($plugins as $plugin) {
 			$name = preg_replace('/^Infinitas/', '', $plugin);
@@ -404,6 +406,49 @@ class InfinitasDoc extends InfinitasDocsAppModel {
 		return new InfinitasDocsIterator(
 				new RecursiveIteratorIterator(
 					new RecursiveDirectoryIterator(InfinitasPlugin::path($plugin))));
+	}
+
+/**
+ * @brief get a list of contributors for the passed in plugin
+ *
+ * @param type $plugin
+ * @return type
+ */
+	protected function _contributors($plugin) {
+		$github = 'https://api.github.com/repos/infinitas/infinitas/contributors';
+		$pluginPath = InfinitasPlugin::path($plugin);
+
+		if(strstr($pluginPath, '/Core/') === false) {
+			$names = array(
+				'Shop' => 'InfinitasShop',
+				'Gallery' => 'InfinitasGallery',
+				'Cms' => 'InfinitasCms',
+				'Blog' => 'InfinitasBlog'
+			);
+			if(!empty($names[$plugin])) {
+				$plugin = $names[$plugin];
+			}
+			if(in_array($plugin, array('Dev', 'Dummy', 'Xhprof'))) {
+				$plugin = 'Developer';
+			}
+			$github = sprintf('https://api.github.com/repos/Infinitas-Plugins/%s/contributors', $plugin);
+		}
+
+		$contributors = @json_decode(file_get_contents($github), true);
+		if(empty($contributors)) {
+			return array();
+		}
+		
+		foreach($contributors as &$contributor) {
+			$contributor = array(
+				'name' => $contributor['login'],
+				'link' => $contributor['url'],
+				'avatar' => $contributor['avatar_url'],
+				'commits' => $contributor['contributions']
+			);
+		}
+
+		return $contributors;
 	}
 
 }

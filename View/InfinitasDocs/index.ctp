@@ -60,6 +60,8 @@ echo $this->Html->tag('div', implode('', array(
 	$this->Html->tag('hr')
 )), array('class' => $class));
 
+echo $this->element('InfinitasDocs.contributors', array('plugin' => $pluginReadme));
+
 array_unshift($links, $this->Html->link(__d('infinitas_docs', 'All Docs'), array(
 	'action' => 'index',
 	'slug' => false,
