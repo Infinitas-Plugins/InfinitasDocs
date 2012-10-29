@@ -11,32 +11,38 @@ class InfinitasDocsEvents extends AppEvents {
  * @return void
  */
 	public function onSetupRoutes(Event $Event) {
-		InfinitasRouter::connect(
-			'/infinitas_docs/:doc_plugin',
-			array(
+		$url = array(
+			'plugin' => 'infinitas_docs',
+			'controller' => 'infinitas_docs',
+			'action' => 'index'
+		);
+		$params = array(
+			'pass' => array(
+				'doc_plugin'
+			)
+		);
+		InfinitasRouter::connect('/infinitas_docs/:doc_plugin', $url, $params);
+
+		$url['action'] = 'view';
+		$params['pass'][] = 'slug';
+		InfinitasRouter::connect('/infinitas_docs/:doc_plugin/:slug', $url, $params);
+	}
+
+/**
+ * @brief plugin details
+ *
+ * @return array
+ */
+	public function onPluginRollCall() {
+		return array(
+			'name' => 'Docs',
+			'description' => 'Infinitas docs viewer',
+			'icon' => '/infinitas_docs/img/icon.png',
+			'author' => 'Infinitas',
+			'dashboard' => array(
 				'plugin' => 'infinitas_docs',
 				'controller' => 'infinitas_docs',
 				'action' => 'index'
-			),
-			array(
-				'pass' => array(
-					'doc_plugin'
-				)
-			)
-		);
-
-		InfinitasRouter::connect(
-			'/infinitas_docs/:doc_plugin/:slug',
-			array(
-				'plugin' => 'infinitas_docs',
-				'controller' => 'infinitas_docs',
-				'action' => 'view'
-			),
-			array(
-				'pass' => array(
-					'doc_plugin',
-					'slug'
-				)
 			)
 		);
 	}
@@ -71,10 +77,6 @@ class InfinitasDocsEvents extends AppEvents {
  * @return array|void
  */
 	protected function _loadAssets($Event) {
-		if(isset($Event->Handler->request->params['admin']) && $Event->Handler->request->params['admin']) {
-			return;
-		}
-
 		return array(
 			'InfinitasDocs.infinitas_docs'
 		);
