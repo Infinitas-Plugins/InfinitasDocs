@@ -29,7 +29,7 @@ class InfinitasDocsController extends InfinitasDocsAppController {
 		);
 
 		$this->notice['empty'] = array(
-			'message' => __d('infinitas_docs', 'The selected docs are empty'),
+			'message' => __d('infinitas_docs', 'The selected docs are currently empty'),
 			'redirect' => true,
 			'level' => 'warning'
 		);
@@ -66,6 +66,7 @@ class InfinitasDocsController extends InfinitasDocsAppController {
 		if(empty($this->request->doc_plugin)) {
 			$docsCorePlugins = $this->{$this->modelClass}->plugins('core', true);
 			$docsPlugins = $this->{$this->modelClass}->plugins('nonCore', true);
+			$pluginReadme = $this->{$this->modelClass}->documentation('readme', null);
 		} else {
 			try {
 				$pluginDocs = $this->{$this->modelClass}->plugin($this->request->doc_plugin);

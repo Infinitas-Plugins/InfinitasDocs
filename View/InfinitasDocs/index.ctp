@@ -1,10 +1,10 @@
 <?php
-echo $this->element('InfinitasDocs.plugins', array(
+$element = $this->element('InfinitasDocs.plugins', array(
 	'plugins' => $docsCorePlugins,
 	'core' => true
 ));
 
-echo $this->element('InfinitasDocs.plugins', array(
+$element .= $this->element('InfinitasDocs.plugins', array(
 	'plugins' => $docsPlugins,
 	'core' => false
 ));
@@ -54,7 +54,7 @@ $class = array(
 );
 echo $this->Html->tag('div', implode('', array(
 	$this->Html->tag('h1', $pluginDocs['Plugin']['name']),
-	$readme,
+	$readme . $element,
 	$readme ? $this->Html->tag('h3', __d('infinitas_docs', 'More')) : null,
 	implode('', $pluginDocs['Documentation']),
 	$this->Html->tag('hr')

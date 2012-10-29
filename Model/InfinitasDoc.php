@@ -259,6 +259,23 @@ class InfinitasDoc extends InfinitasDocsAppModel {
  * @throws InvalidArgumentException
  */
 	public function documentation($plugin, $file) {
+		if($file === null && $plugin == 'readme') {
+			return array(
+				'Plugin' => array(
+					'name' => 'Infinitas Cms',
+					'slug' => null,
+					'core' => true
+				),
+				'Documentation' => array(
+					'name' => 'Infinitas Cms',
+					'slug' => 'readme',
+					'file' => 'readme.md',
+					'path' => APP . 'Core' . DS,
+					'contents' => $this->_getContent(APP . 'Core' . DS . 'readme.md'),
+					'github' => $this->_gitHub(APP . 'Core' . DS . 'readme.md')
+				)
+			);
+		}
 		if(!$this->validateValidPlugin($plugin)) {
 			throw new InvalidArgumentException(__d('infinitas_docs', 'Invalid plugin selected'));
 		}
