@@ -117,6 +117,7 @@ body .infinitas_docs {
 	padding: 0 0 0 15px;
 	margin: 0 0 20px;
 	border-left: 5px solid #EEE;
+	background-image: none;
 }
 
 .infinitas_docs blockquote::before,
