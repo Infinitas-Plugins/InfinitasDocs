@@ -17,7 +17,7 @@ $(document).ready(function() {
 	$('a').on('click', function() {
 		var $this = $(this),
 			url = $this.attr('href');
-		var external = strstr(url, location.host) === false && url.charAt(0) != '/';
+		var external = strstr(url, location.host) === false && url.charAt(0) != '/' && url.charAt(0) != '#';
 		if(external) {
 			$this.attr('target', '_blank');
 		}
