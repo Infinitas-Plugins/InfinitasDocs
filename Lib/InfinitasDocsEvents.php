@@ -33,7 +33,7 @@ class InfinitasDocsEvents extends AppEvents {
  *
  * @return array
  */
-	public function onPluginRollCall() {
+	public function onPluginRollCall(Event $Event) {
 		return array(
 			'name' => 'Docs',
 			'description' => 'Infinitas docs viewer',
@@ -76,7 +76,7 @@ class InfinitasDocsEvents extends AppEvents {
  *
  * @return array|void
  */
-	protected function _loadAssets($Event) {
+	protected function _loadAssets(Event $Event) {
 		return array(
 			'InfinitasDocs.infinitas_docs'
 		);
