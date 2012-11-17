@@ -82,4 +82,65 @@ class InfinitasDocsEvents extends AppEvents {
 		);
 	}
 
+/**
+ * Return messages for docs and api requests
+ *
+ * Options:
+ * 	!docs for documentaion links
+ * 	!api for api links
+ * 
+ * @param Event  $Event the event being triggered
+ * @param array $data the data being parsed
+ * 
+ * @return boolean
+ */
+	public function onIrcMessage(Event $Event, $data = null) {
+		$options = array(
+			'to' => $data['to'],
+			'args' => $data['args'],
+			'api' => 'http://api.infinitas-cms.org',
+			'docs' => 'http://infinitas-cms.org/infinitas_docs'
+		);
+
+		if($data['command'] == 'api') {
+			$message = ':to: :api';
+			if(!empty($options['args'])) {
+				if($options['args'] == 'help') {
+					$message = ':to: !api [class_name|ClassName|plugin_name|PluginName]';
+				} else {
+					$message = ':to: :api/classes/:args.html';
+
+					$options['args'] = Inflector::camelize($options['args']);
+					if(in_array($options['args'], InfinitasPlugin::listPlugins('all'))) {
+						if(strstr(InfinitasPlugin::path($options['args']), '/Core/') !== false) {
+							$options['args'] = 'Infinitas.' . $options['args'];
+						}
+						$message = ':to: :api/packages/:args.html';
+					}
+				}
+					
+			}
+
+			$Event->Handler->reply($data['channel'], $message, $options);
+			return true;
+		}
+
+		if($data['command'] == 'docs') {
+			$message = ':to: :docs';
+			if(!empty($options['args'])) {
+				if($options['args'] == 'help') {
+					$message = ':to: !docs [plugin_name|PluginName]';
+				} else {
+					$options['args'] = Inflector::camelize($options['args']);
+					$message = ':to: :docs/:args';
+				}
+			}
+
+			$Event->Handler->reply($data['channel'], $message, $options);
+			return true;
+		}
+
+		return false;
+	}
+
 }
