@@ -3,6 +3,19 @@
  * @brief events for the InfinitasDocs plugin
  */
 class InfinitasDocsEvents extends AppEvents {
+
+/**
+ * Force the docs to use the default theme
+ * 
+ * @return array
+ */
+	public function onSetupThemeStart() {
+		return array(
+			'theme' => 'infinitas',
+			'layout' => 'front'
+		);
+	}
+
 /**
  * @brief configure some basic routing for the docs
  *
@@ -142,5 +155,4 @@ class InfinitasDocsEvents extends AppEvents {
 
 		return false;
 	}
-
 }
